@@ -22,40 +22,40 @@ any of the following licenses:
 
 Using the library
 -----------------
-  
+
     // Define an ArduinoEthernetCom with optional options
     var arduinoEthernetCom = new ArduinoEthernetCom(_options_);
-    
+
     // Define one or more observers to be notified each time the data updates
     var dataDidUpdate = function(data) {
       var pinA0Value = data.A0;           // data is returned as a hash of values
       graph(pinA0Value)                   // do whatever
     }
-  
+
     arduinoEthernetCom.addObserver(dataDidUpdate);
-    
+
     // start polling the Arduino, calling all the observers each time with data
     arduinoEthernetCom.start();
-    
+
     // some time later
     arduinoEthernetCom.stop();
-    
+
     // this will grab the current values of the pins. This is probably not as useful
     // as the start() method, which continually polls the data.
     arduinoEthernetCom.getData();
-    
-    
+
+
 ### Options
 
 You can pass a hash of options to ArduinoEthernetCom, e.g. `var arduinoEthernetCom = new ArduinoEthernetCom({frequency: 2, generate_random_data: true});`
 
-* **arduino\_server\_ip**: 
+* **arduino\_server\_ip**:
   * IP that the Arduino server is running on. **Default**: http://169.254.1.1
-* **frequency**: 
+* **frequency**:
   * Frequency of data collection in Hertz. **Default**: 4 (i.e. we will request data 4 times a second)
-* **delay\_time**: 
+* **delay\_time**:
   * Alternative way of defining frequency, in ms. **Default**: None, the above already defines 250 ms
-* **generate\_random\_data**: 
+* **generate\_random\_data**:
   * If true, random floating voltages will be generated for all 6 pins. This means you don't need to connect an Arduino, so it can be used for testing. **Default**: false
 * **callback_function_name**:
   * The function called by the Arduino's script to send JSON-P data. This shouldn't be changed unless the sketch is modified. **Default**: arduinoEthernetComCallback
@@ -66,3 +66,19 @@ Using this with an Arduino on a web page
 1. Upload the server sketch located at Arduino/JSONPSensorServer.ino to the Arduino. This will start a server running at http://169.254.1.1. If you need to use a different IP address, you must modify the sketch.
 2. Plug the Arduino into the computer with an Ethernet cable. Wait about 30 seconds for the server to boot up.
 3. Use the ArduinoEthernetCom library to get data from the Arduino.
+
+### iPad with iOS 5.x
+
+We've got the Arduino working with the browser on an iPad using iOS 5.0 and 5.1.
+
+We've tested an iPad 1 using iOS 5.0 and and iPad2 and iPad3 running iOS 5.1. An iPad1 with iOS 4.3 didn't work.
+
+Setup:
+
+- iPad connected to bluetooth access point through bluetooth PAN profile
+- iPad connected to internet via wifi or 3G
+- bluetooth access point connected to Arduino via wired ethernet
+
+The iPad is connected to 2 ethernet sources at the same time.
+
+This approach didn't work on Android ICS. When the wifi is on, it won't keep the bluetooth PAN connection open.
